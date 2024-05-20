@@ -4,12 +4,14 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.wsexemple.course.entities.enums.OrderStatus;
 import jakarta.persistence.*;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.Instant;
 
 @Entity
 @Table(name = "tb_order")
 public class Order implements Serializable {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -88,10 +90,7 @@ public class Order implements Serializable {
             return false;
         Order other = (Order) obj;
         if (id == null) {
-            if (other.id != null)
-                return false;
-        } else if (!id.equals(other.id))
-            return false;
-        return true;
+            return other.id == null;
+        } else return id.equals(other.id);
     }
 }

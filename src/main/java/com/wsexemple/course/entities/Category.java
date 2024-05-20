@@ -1,22 +1,25 @@
 package com.wsexemple.course.entities;
 
+import java.io.Serial;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "tb_category")
 public class Category implements Serializable {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+
+    @Transient
+    private Set<Product> products = new HashSet<>();
 
     public Category() {
     }
@@ -43,6 +46,10 @@ public class Category implements Serializable {
         this.name = name;
     }
 
+    public Set<Product> getProducts() {
+        return products;
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -61,10 +68,7 @@ public class Category implements Serializable {
             return false;
         Category other = (Category) obj;
         if (id == null) {
-            if (other.id != null)
-                return false;
-        } else if (!id.equals(other.id))
-            return false;
-        return true;
+            return other.id == null;
+        } else return id.equals(other.id);
     }
 }
